@@ -1,103 +1,260 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <UnitTest++>
 
 using namespace std;
 
-class vektor{
+class Vektor {
 public:
-    vektor(double x1,double y1,double z1,double x2,double y2,double z2)
+    Vektor (double x1, double y1, double z1)
     {
-        begin_x=x1;
-        begin_y=y1;
-        begin_z=z1;
-        end_x=x2;
-        end_y=y2;
-        end_z=z2;
+        x = x1;
+        y = y1;
+        z = z1;
     }
-    vektor(){
-        begin_x=0;
-        begin_y=0;
-        begin_z=0;
-        end_x=0;
-        end_y=0;
-        end_z=0;
+    Vektor (double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        x = x2-x1;
+        y = y2-y1;
+        z = z2-z1;
+    }
+    Vektor () {
+        x = 0;
+        y = 0;
+        z = 0;
 
     }
-    vektor operator+(const vektor& i);
-    vektor operator+=(const vektor& i);
-    vektor operator=(const vektor& i);
-    vector <double> get_start_point();
-    vector <double> get_end_point();
+    Vektor operator+(const Vektor& i);
+    Vektor operator+=(const Vektor& i);
+    Vektor operator-(const Vektor& i);
+    Vektor operator-=(const Vektor& i);
+    Vektor operator*(const Vektor& i);
+    Vektor operator*=(const Vektor& i);
+    bool operator<(Vektor& i);
+    bool operator<=(Vektor& i);
+    bool operator>(Vektor& i);
+    bool operator>=(Vektor& i);
+    Vektor operator*(double n);
+    Vektor operator*=(double n);
+    double operator^(Vektor& i);
+    Vektor operator=(const Vektor& i);
+    vector<double> get_start_point();
+    vector<double> get_end_point();
+    vector<double> get_coordinates();
     double vektor_length();
-
+    void set_x(double);
+    void set_y(double);
+    void set_z(double);
+    double get_x();
+    double get_y();
+    double get_z();
 
 private:
-    double begin_x,begin_y,begin_z,end_x,end_y,end_z;
+    double x, y, z;
 
 
 };
+
+Vektor operator*(double ,Vektor&);
+double radian_to_degree(double);
+double degree_to_radian(double);
+
 int main() {
-    vektor A(1,2,3,4,5,6);
-    vektor B(3,4,5,6,7,8);
-    vektor C;
-    C=A+B;
-    cout << C.vektor_length();
-    std::cout << "Hello, World!" << std::endl;
+    double n=3;
+    Vektor A(0,2,0);
+    Vektor B(1,0,0);
+    Vektor C;
+    C = 3*A;
+    cout << C.vektor_length() << endl;
     return 0;
 }
 
-vector <double> vektor::get_start_point(){
-    vector <double> start_point;
-    start_point.push_back(this->begin_x);
-    start_point.push_back(this->begin_y);
-    start_point.push_back(this->begin_z);
+
+void Vektor::set_x(double new_x)
+{
+    x=new_x;
+}
+
+void Vektor::set_y(double new_y)
+{
+    y=new_y;
+}
+
+void Vektor::set_z(double new_z)
+{
+    z=new_z;
+}
+
+double Vektor::get_x()
+{
+    cin.ignore
+    return x;
+}
+
+double Vektor::get_y()
+{
+    return y;
+}
+
+double Vektor::get_z()
+{
+    return z;
+}
+
+
+vector<double> Vektor::get_start_point() {
+    vector<double> start_point;
+    start_point.push_back(0);
+    start_point.push_back(0);
+    start_point.push_back(0);
     return start_point;
-};
-vector <double> vektor::get_end_point(){
-    vector <double> end_point;
-    end_point.push_back(this->end_x);
-    end_point.push_back(this->end_y);
-    end_point.push_back(this->end_z);
+}
+
+vector<double> Vektor::get_end_point() {
+    vector<double> end_point;
+    end_point.push_back(x);
+    end_point.push_back(y);
+    end_point.push_back(z);
     return end_point;
 }
 
-double vektor::vektor_length() {
-    double length;
-    length=sqrt(pow((this->begin_x-this->end_x),2)+pow((this->begin_y-this->end_y),2)+pow((this->begin_z-this->end_z),2));
-    return length;
+double Vektor::vektor_length()
+{
+    return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 }
 
-vektor vektor::operator+(const vektor &i) {
-    vektor S(0,0,0,0,0,0);
+Vektor Vektor::operator+(const Vektor& i)
+{
+    Vektor S;
 
-    S.end_x=this->end_x-this->begin_x+i.end_x-i.begin_x;
-    S.end_y=this->end_x-this->begin_x+i.end_x-i.begin_x;
-    S.end_z=this->end_z-this->begin_z+i.end_z-i.begin_z;
-    S.begin_x=0;
-    S.begin_y=0;
-    S.begin_z=0;
-
+    S.x = x + i.x;
+    S.y = y + i.y;
+    S.z = z + i.z;
 
     return S;
-};
-vektor vektor::operator+=(const vektor &i) {
-   this->end_x+=i.end_x-i.begin_x;
-   this->end_y+=i.end_y-i.begin_y;
-   this->end_z+=i.end_z-i.begin_z;
-   return *this;
 }
 
-vektor vektor::operator=(const vektor &i) {
-    vektor S;
-    if (this == &i){
+Vektor Vektor::operator+=(const Vektor& i)
+{
+    x += i.x;
+    y += i.y;
+    z += i.z;
+    return *this;
+}
+
+Vektor Vektor::operator-(const Vektor& i)
+{
+    Vektor S;
+
+    S.x = x - i.x;
+    S.y = y - i.y;
+    S.z = z - i.z;
+
+    return S;
+}
+
+Vektor Vektor::operator-=(const Vektor& i)
+{
+    x -= i.x;
+    y -= i.y;
+    z -= i.z;
+    return *this;
+}
+
+Vektor Vektor::operator*(const Vektor& i)
+{
+    Vektor S;
+
+    S.x = y * i.z - z * i.y;
+    S.y = z * i.x - x * i.z;
+    S.z = x * i.y - y * i.x;
+
+    return S;
+}
+
+Vektor Vektor::operator*=(const Vektor& i)
+{
+    x = y * i.z - z * i.y;
+    y = z * i.x - x * i.z;
+    z = x * i.y - y * i.x;
+    return *this;
+}
+
+bool Vektor::operator<(Vektor& i)
+{
+    return (this->vektor_length() < i.vektor_length());
+}
+
+bool Vektor::operator<=(Vektor& i)
+{
+    return (this->vektor_length() <= i.vektor_length());
+}
+
+bool Vektor::operator>(Vektor& i)
+{
+    return (this->vektor_length() > i.vektor_length());
+}
+
+bool Vektor::operator>=(Vektor& i)
+{
+    return (this->vektor_length() >= i.vektor_length());
+}
+
+Vektor Vektor::operator*(double n)
+{
+    Vektor S;
+
+    S.x = x * n;
+    S.y = y * n;
+    S.z = z * n;
+
+    return S;
+}
+
+Vektor Vektor::operator*=(double n)
+{
+    x *= n;
+    y *= n;
+    z *= n;
+    return *this;
+}
+
+Vektor Vektor::operator=(const Vektor& i)
+{
+    if (this == &i) {
         return i;
     }
-    this->begin_x=i.begin_x;
-    this->begin_y=i.begin_y;
-    this->begin_z=i.begin_z;
-    this->end_x=i.end_x;
-    this->end_y=i.end_y;
-    this->end_z=i.end_z;
+    this->x = i.x;
+    this->y = i.y;
+    this->z = i.z;
     return *this;
-};
+}
+
+double Vektor::operator^(Vektor& i)
+{
+    return acos((x * i.x + y * i.y + x * i.z) / (this->vektor_length() * i.vektor_length()));
+}
+
+vector<double> Vektor::get_coordinates()
+{
+    vector<double> coords;
+    coords.push_back(x);
+    coords.push_back(y);
+    coords.push_back(z);
+    return coords;
+}
+
+Vektor operator*(double n, Vektor& vektor)
+{
+    return vektor * n;
+}
+
+double radian_to_degree(double rad) {
+    return rad/3.1415926*180;
+}
+
+double degree_to_radian(double deg) {
+    return deg*180/3.1415926;
+}
+
